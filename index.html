@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>DIU Tuition Fee Calculator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#0f172a,#1e293b,#111827);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+    color:white;
+}
+
+.container{
+    width:100%;
+    max-width:1100px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:24px;
+    padding:35px;
+    box-shadow:0 10px 35px rgba(0,0,0,0.35);
+}
+
+.title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.title h1{
+    font-size:38px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.title p{
+    color:#cbd5e1;
+    font-size:15px;
+}
+
+.main-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+}
+
+.card{
+    background:rgba(255,255,255,0.06);
+    border-radius:20px;
+    padding:25px;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.card h2{
+    margin-bottom:20px;
+    font-size:22px;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:8px;
+    font-size:14px;
+    color:#e2e8f0;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#0f172a;
+    color:white;
+    font-size:15px;
+    outline:none;
+}
+
+.input-group input:focus,
+.input-group select:focus{
+    border:2px solid #38bdf8;
+}
+
+button{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#06b6d4,#3b82f6);
+    color:white;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top:10px;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    opacity:0.95;
+}
+
+.result-box{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.result-item{
+    background:#0f172a;
+    border-radius:14px;
+    padding:16px;
+}
+
+.result-item h3{
+    font-size:14px;
+    color:#94a3b8;
+    margin-bottom:6px;
+}
+
+.result-item p{
+    font-size:24px;
+    font-weight:700;
+}
+
+.highlight{
+    background:linear-gradient(135deg,#0ea5e9,#2563eb);
+}
+
+.highlight p{
+    font-size:30px;
+}
+
+.details{
+    margin-top:20px;
+}
+
+.details table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.details table tr{
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.details table td{
+    padding:12px 0;
+    font-size:14px;
+}
+
+.details table td:last-child{
+    text-align:right;
+    font-weight:600;
+}
+
+.note{
+    margin-top:20px;
+    font-size:13px;
+    color:#cbd5e1;
+    line-height:1.7;
+}
+
+.footer{
+    margin-top:25px;
+    text-align:center;
+    color:#94a3b8;
+    font-size:13px;
+}
+
+@media(max-width:900px){
+
+    .main-grid{
+        grid-template-columns:1fr;
+    }
+
+    .title h1{
+        font-size:30px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="title">
+        <h1>🎓 DIU Tuition Fee Calculator</h1>
+        <p>Calculate registration fee, tuition fee, waiver amount and final payable amount instantly.</p>
+    </div>
+
+    <div class="main-grid">
+
+        <!-- LEFT SIDE -->
+        <div class="card">
+
+            <h2>📚 Enter Your Information</h2>
+
+            <div class="input-group">
+                <label>Core Theory Credits</label>
+                <input type="number" id="core" value="6" min="0">
+            </div>
+
+            <div class="input-group">
+                <label>GED / Non-Core Credits</label>
+                <input type="number" id="ged" value="3" min="0">
+            </div>
+
+            <div class="input-group">
+                <label>FYDP Credits (No Waiver)</label>
+                <input type="number" id="fydp" value="2" min="0">
+            </div>
+
+            <div class="input-group">
+                <label>Lab Credits</label>
+                <input type="number" id="lab" value="0" min="0">
+            </div>
+
+            <div class="input-group">
+                <label>Select Waiver</label>
+                <select id="waiver">
+                    <option value="0">0%</option>
+                    <option value="10">10%</option>
+                    <option value="25">25%</option>
+                    <option value="35">35%</option>
+                    <option value="50">50%</option>
+                    <option value="75">75%</option>
+                </select>
+            </div>
+
+            <button onclick="calculateFees()">
+                Calculate Fees
+            </button>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="card">
+
+            <h2>💰 Payment Summary</h2>
+
+            <div class="result-box">
+
+                <div class="result-item highlight">
+                    <h3>Amount Payable Before Final</h3>
+                    <p id="finalAmount">Tk 0</p>
+                </div>
+
+                <div class="result-item">
+                    <h3>Total Tuition Fee</h3>
+                    <p id="totalTuition">Tk 0</p>
+                </div>
+
+                <div class="result-item">
+                    <h3>Waiver Amount</h3>
+                    <p id="waiverAmount">Tk 0</p>
+                </div>
+
+                <div class="result-item">
+                    <h3>Total Registration Fee</h3>
+                    <p id="registrationFee">Tk 29,500</p>
+                </div>
+
+            </div>
+
+            <div class="details">
+
+                <table>
+
+                    <tr>
+                        <td>Core Theory Fee</td>
+                        <td id="coreFee">Tk 0</td>
+                    </tr>
+
+                    <tr>
+                        <td>GED / Non-Core Fee</td>
+                        <td id="gedFee">Tk 0</td>
+                    </tr>
+
+                    <tr>
+                        <td>FYDP Fee</td>
+                        <td id="fydpFee">Tk 0</td>
+                    </tr>
+
+                    <tr>
+                        <td>Lab Fee</td>
+                        <td id="labFee">Tk 0</td>
+                    </tr>
+
+                    <tr>
+                        <td>Tuition After Waiver</td>
+                        <td id="afterWaiver">Tk 0</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="note">
+                ⚠️ FYDP credits do not receive any waiver.<br>
+                ⚠️ Registration fee includes Tk 16,000 registration fee + Tk 13,500 initial tuition payment.
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Made for DIU Students ❤️
+    </div>
+
+</div>
+
+<script>
+
+function formatMoney(amount)
+{
+    return "Tk " + amount.toLocaleString(undefined,{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+    });
+}
+
+function calculateFees()
+{
+    // =====================
+    // Fixed Values
+    // =====================
+
+    const CORE_RATE = 4900;
+    const GED_RATE = 3300;
+    const FYDP_RATE = 3200;
+    const LAB_RATE = 5000;
+
+    const REGISTRATION_FEE = 16000;
+    const INITIAL_TUITION = 13500;
+
+    // =====================
+    // Input Values
+    // =====================
+
+    const core =
+        parseFloat(document.getElementById("core").value) || 0;
+
+    const ged =
+        parseFloat(document.getElementById("ged").value) || 0;
+
+    const fydp =
+        parseFloat(document.getElementById("fydp").value) || 0;
+
+    const lab =
+        parseFloat(document.getElementById("lab").value) || 0;
+
+    const waiver =
+        parseFloat(document.getElementById("waiver").value);
+
+    // =====================
+    // Calculations
+    // =====================
+
+    const coreFee = core * CORE_RATE;
+    const gedFee = ged * GED_RATE;
+    const fydpFee = fydp * FYDP_RATE;
+    const labFee = lab * LAB_RATE;
+
+    const totalTuition =
+        coreFee +
+        gedFee +
+        fydpFee +
+        labFee;
+
+    // No waiver on FYDP
+    const waiverEligible =
+        coreFee +
+        gedFee +
+        labFee;
+
+    const waiverAmount =
+        waiverEligible * waiver / 100;
+
+    const tuitionAfterWaiver =
+        waiverEligible - waiverAmount;
+
+    const beforeFinal =
+        tuitionAfterWaiver +
+        fydpFee -
+        INITIAL_TUITION;
+
+    const registrationFee =
+        REGISTRATION_FEE +
+        INITIAL_TUITION;
+
+    // =====================
+    // Output
+    // =====================
+
+    document.getElementById("coreFee").innerText =
+        formatMoney(coreFee);
+
+    document.getElementById("gedFee").innerText =
+        formatMoney(gedFee);
+
+    document.getElementById("fydpFee").innerText =
+        formatMoney(fydpFee);
+
+    document.getElementById("labFee").innerText =
+        formatMoney(labFee);
+
+    document.getElementById("totalTuition").innerText =
+        formatMoney(totalTuition);
+
+    document.getElementById("waiverAmount").innerText =
+        formatMoney(waiverAmount);
+
+    document.getElementById("afterWaiver").innerText =
+        formatMoney(tuitionAfterWaiver);
+
+    document.getElementById("registrationFee").innerText =
+        formatMoney(registrationFee);
+
+    document.getElementById("finalAmount").innerText =
+        formatMoney(beforeFinal);
+}
+
+// Auto Calculate On Load
+calculateFees();
+
+</script>
+
+</body>
+</html>
