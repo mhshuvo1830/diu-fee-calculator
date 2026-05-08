@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University Waiver & Fee Calculator</title>
+    <title>Spring 2026 64 Batch Calculator</title>
     <style>
         :root {
-            --primary: #4F46E5;
-            --primary-hover: #4338CA;
-            --bg: #F3F4F6;
+            --primary: #0EA5E9;
+            --primary-hover: #0284C7;
+            --bg: #F8FAFC;
             --card-bg: #FFFFFF;
-            --text-main: #1F2937;
-            --text-muted: #6B7280;
-            --border: #E5E7EB;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
             --success: #10B981;
         }
 
@@ -35,13 +35,31 @@
 
         .container {
             background-color: var(--card-bg);
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             display: grid;
             grid-template-columns: 1fr 1fr;
             overflow: hidden;
+        }
+
+        .header-banner {
+            grid-column: 1 / -1;
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header-banner h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .header-banner p {
+            font-size: 0.9rem;
+            opacity: 0.9;
         }
 
         .input-section {
@@ -55,9 +73,9 @@
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             margin-bottom: 20px;
-            color: var(--primary);
+            color: var(--text-main);
         }
 
         .form-group {
@@ -83,7 +101,7 @@
         input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
         }
 
         .receipt {
@@ -125,7 +143,7 @@
         }
 
         .final-amount {
-            background-color: var(--primary);
+            background-color: var(--text-main);
             color: white;
             padding: 15px;
             border-radius: 8px;
@@ -156,35 +174,40 @@
 <body>
 
 <div class="container">
+    <div class="header-banner">
+        <h1>Payment Spring 2026</h1>
+        <p>64 Batch Custom Calculator</p>
+    </div>
+
     <div class="input-section">
         <h2>🎓 Enter Your Credits</h2>
         
         <div class="form-group">
             <label>📕 Core Theory Credits</label>
-            <input type="number" id="coreCredits" min="0" value="0" placeholder="e.g., 3">
+            <input type="number" id="coreCredits" min="0" step="0.5" value="12">
             <span class="info-text">৳4,900 per credit</span>
         </div>
 
         <div class="form-group">
             <label>🗒️ Non-Core / GED Credits</label>
-            <input type="number" id="gedCredits" min="0" value="0" placeholder="e.g., 3">
+            <input type="number" id="gedCredits" min="0" step="0.5" value="0">
             <span class="info-text">৳3,300 per credit</span>
         </div>
 
         <div class="form-group">
-            <label>🔬 Lab Credits</label>
-            <input type="number" id="labCredits" min="0" value="0" placeholder="e.g., 1">
+            <label>🖥 Lab Credits</label>
+            <input type="number" id="labCredits" min="0" step="0.5" value="1.5">
             <span class="info-text">৳5,000 per credit</span>
         </div>
 
         <div class="form-group">
-            <label>📌 FYDP Phase Credits</label>
-            <input type="number" id="fydpCredits" min="0" value="0" placeholder="e.g., 2">
+            <label>📌 FYDP Title Defense</label>
+            <input type="number" id="fydpCredits" min="0" step="0.5" value="1">
             <span class="info-text">৳3,200 per credit (No Waiver)</span>
         </div>
 
         <div class="form-group">
-            <label>✨ Waiver Percentage</label>
+            <label>🎀 Waiver Percentage</label>
             <select id="waiverPercent">
                 <option value="0">0%</option>
                 <option value="10">10%</option>
@@ -197,8 +220,8 @@
 
         <div class="form-group">
             <label>💰 Already Paid Tuition (Advance)</label>
-            <input type="number" id="advancePaid" min="0" value="13500">
-            <span class="info-text">Default is ৳13,500</span>
+            <input type="number" id="advancePaid" min="0" value="16000">
+            <span class="info-text">Aligned to match the updated ৳29,500 total registration logic.</span>
         </div>
     </div>
 
@@ -224,21 +247,21 @@
 
             <div class="divider"></div>
 
-            <div class="receipt-row deduction">
-                <span>Already Paid Tuition:</span>
-                <span id="outAdvance">- Tk 13500.00</span>
+            <div class="receipt-row">
+                <span>FYDP Fee Added (No Waiver):</span>
+                <span id="outFydp">Tk 0.00</span>
             </div>
 
-            <div class="receipt-row">
-                <span>Remaining Tuition Due:</span>
-                <span id="outRemainingTuition">Tk 0.00</span>
+            <div class="receipt-row bold">
+                <span>Total Tuition Generated:</span>
+                <span id="outTotalTuition">Tk 0.00</span>
             </div>
 
             <div class="divider"></div>
 
-            <div class="receipt-row">
-                <span>FYDP Fee Added (No Waiver):</span>
-                <span id="outFydp">Tk 0.00</span>
+            <div class="receipt-row deduction">
+                <span>Already Paid Tuition:</span>
+                <span id="outAdvance">- Tk 16000.00</span>
             </div>
 
         </div>
@@ -251,22 +274,18 @@
 </div>
 
 <script>
-    // Rates
     const CORE_RATE = 4900;
     const GED_RATE = 3300;
     const LAB_RATE = 5000;
     const FYDP_RATE = 3200;
 
-    // Get input elements
     const inputs = document.querySelectorAll('input, select');
     
-    // Add event listeners to calculate automatically on change
     inputs.forEach(input => {
         input.addEventListener('input', calculateFees);
     });
 
     function calculateFees() {
-        // Fetch values
         const core = parseFloat(document.getElementById('coreCredits').value) || 0;
         const ged = parseFloat(document.getElementById('gedCredits').value) || 0;
         const lab = parseFloat(document.getElementById('labCredits').value) || 0;
@@ -278,24 +297,22 @@
         const eligibleTuition = (core * CORE_RATE) + (ged * GED_RATE) + (lab * LAB_RATE);
         const waiverAmount = eligibleTuition * (waiverPercent / 100);
         const tuitionAfterWaiver = eligibleTuition - waiverAmount;
-        const remainingTuitionDue = tuitionAfterWaiver - advancePaid;
         const fydpFee = fydp * FYDP_RATE;
         
-        // Final Payable (Remaining Tuition + FYDP). If remaining tuition is negative, it offsets FYDP.
-        const finalPayable = remainingTuitionDue + fydpFee;
+        const totalTuitionGenerated = tuitionAfterWaiver + fydpFee;
+        const finalPayable = totalTuitionGenerated - advancePaid;
 
         // Update UI
-        document.getElementById('outEligible').innerText = `Tk ${eligibleTuition.toFixed(2)}`;
+        document.getElementById('outEligible').innerText = `Tk ${eligibleTuition.toFixed(0)}`;
         document.getElementById('outWaiverPercent').innerText = waiverPercent;
-        document.getElementById('outWaiverAmount').innerText = `- Tk ${waiverAmount.toFixed(2)}`;
-        document.getElementById('outAfterWaiver').innerText = `Tk ${tuitionAfterWaiver.toFixed(2)}`;
-        document.getElementById('outAdvance').innerText = `- Tk ${advancePaid.toFixed(2)}`;
-        document.getElementById('outRemainingTuition').innerText = `Tk ${remainingTuitionDue.toFixed(2)}`;
-        document.getElementById('outFydp').innerText = `Tk ${fydpFee.toFixed(2)}`;
-        document.getElementById('outFinalPayable').innerText = `Tk ${finalPayable.toFixed(2)}`;
+        document.getElementById('outWaiverAmount').innerText = `- Tk ${waiverAmount.toFixed(0)}`;
+        document.getElementById('outAfterWaiver').innerText = `Tk ${tuitionAfterWaiver.toFixed(0)}`;
+        document.getElementById('outFydp').innerText = `Tk ${fydpFee.toFixed(0)}`;
+        document.getElementById('outTotalTuition').innerText = `Tk ${totalTuitionGenerated.toFixed(0)}`;
+        document.getElementById('outAdvance').innerText = `- Tk ${advancePaid.toFixed(0)}`;
+        document.getElementById('outFinalPayable').innerText = `Tk ${finalPayable.toFixed(0)}`;
     }
 
-    // Run once on load to initialize zeroes
     calculateFees();
 </script>
 
