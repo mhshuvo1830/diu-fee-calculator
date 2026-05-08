@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tuition Fee Calculator - 64 Batch</title>
+    <title>Tuition Fee Calculator DIU</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -316,7 +316,7 @@
 
     <header>
         <div class="badges">
-            <span class="badge">🎓 DIU 64 Batch - CSE</span>
+            <span class="badge">🎓 DIU - CSE</span>
             <span class="badge">✨ Official Rates</span>
         </div>
         <h1>Tuition Fee Calculator</h1>
@@ -395,7 +395,7 @@
                 <h2>Amount Payable Before Final Exam</h2>
                 <div class="big-amount" id="bigFinalAmount">৳ 53,500.00</div>
                 <div style="font-size: 0.8rem; color: var(--text-muted);" id="calculationSubtitle">
-                    Total Tuition - Waiver (Lab+Core+GED) - ৳16,000 Reg Fee
+                    Total Tuition - Waiver (Lab+Core+GED) - ৳16,000 Initial Tuition
                 </div>
             </div>
 
@@ -409,7 +409,7 @@
                     <div class="stat-value text-green" id="statSaved">৳ 0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Reg. Fee (Upfront)</div>
+                    <div class="stat-title">Upfront Paid (Reg + Tuition)</div>
                     <div class="stat-value" style="color: #fcd34d;">৳ 29,500</div>
                 </div>
             </div>
@@ -432,7 +432,7 @@
                             <span>Waiver (<span id="tableWaiverPercent">0</span>%)</span> <strong id="tableWaiverAmount">- ৳ 0</strong>
                         </div>
                         <div class="breakdown-row text-danger">
-                            <span>Registration Fee Deducted</span> <strong>- ৳ 16,000</strong>
+                            <span>Initial Tuition Deducted</span> <strong>- ৳ 16,000</strong>
                         </div>
                         <div class="breakdown-row" style="margin-top: 10px; font-size: 1.1rem; color: white; border-top: 1px solid #374151; padding-top: 10px;">
                             <span>Before Final Payable</span> <strong class="text-cyan" id="tableFinal">৳ 53,500.00</strong>
@@ -449,12 +449,12 @@
                             <span class="white">Waiver Saving</span> = Waiver-Eligible Base × Waiver %
                         </div>
                         <div class="formula-box">
-                            <span class="white">Before Final Payable</span> = (Gross Tuition - Waiver Saving) - ৳16,000 <span class="muted">(Reg Fee Component)</span>
+                            <span class="white">Before Final Payable</span> = (Gross Tuition - Waiver Saving) - ৳16,000 <span class="muted">(Initial Tuition Paid)</span>
                         </div>
                         
                         <div class="warning-box" style="margin-top: 1rem; border-left-color: #fcd34d;">
-                            <strong style="color: #fcd34d;">Upfront Registration Note:</strong><br>
-                            The initial ৳29,500 paid at registration consists of a ৳16,000 standard registration fee and a ৳13,500 initial tuition deposit. Only the ৳16,000 registration component is deducted to find the "Before Final" balance.
+                            <strong style="color: #fcd34d;">Upfront Payment Note:</strong><br>
+                            The initial ৳29,500 paid at registration consists of a ৳13,500 registration fee and a ৳16,000 initial tuition deposit. Only the ৳16,000 tuition component is deducted from your total tuition to find the "Before Final" balance.
                         </div>
                     </div>
                 </div>
@@ -464,7 +464,7 @@
     </div>
 
     <div class="footer">
-        Made with ❤️ for DIU 64 Batch • Verified Data for Official Rates
+        Made with ❤️ for DIU  • Verified Data for Official Rates
     </div>
 
     <script>
@@ -475,7 +475,7 @@
             ged: 3300,
             fydp: 3200
         };
-        const REG_FEE_DEDUCTION = 16000;
+        const INITIAL_TUITION_DEDUCTION = 16000;
         let currentWaiver = 0;
 
         // Elements
@@ -528,7 +528,7 @@
             const totalTuitionAfterWaiver = grossTotal - waiverSaved;
             
             // Final Payable
-            const finalPayable = totalTuitionAfterWaiver - REG_FEE_DEDUCTION;
+            const finalPayable = totalTuitionAfterWaiver - INITIAL_TUITION_DEDUCTION;
 
             // Update UI - Snapshot Left Panel
             document.getElementById('snapLab').innerText = `৳ ${fmt(feeLab)}`;
