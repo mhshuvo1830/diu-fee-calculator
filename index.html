@@ -3,318 +3,559 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spring 2026 64 Batch Calculator</title>
+    <title>Tuition Fee Calculator - 64 Batch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0EA5E9;
-            --primary-hover: #0284C7;
-            --bg: #F8FAFC;
-            --card-bg: #FFFFFF;
-            --text-main: #0F172A;
-            --text-muted: #64748B;
-            --border: #E2E8F0;
-            --success: #10B981;
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --card-border: #1f2937;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-cyan: #22d3ee;
+            --accent-cyan-glow: rgba(34, 211, 238, 0.2);
+            --accent-blue: #818cf8;
+            --danger: #f87171;
+            --success: #34d399;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background-color: var(--bg);
+            background-color: var(--bg-color);
             color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 2rem;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(34, 211, 238, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(129, 140, 248, 0.05) 0%, transparent 50%);
         }
 
-        .container {
-            background-color: var(--card-bg);
-            max-width: 850px;
-            width: 100%;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        /* HEADER */
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            background: rgba(31, 41, 55, 0.8);
+            border: 1px solid var(--card-border);
+            padding: 0.25rem 1rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #f3f4f6, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        /* LAYOUT */
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
             overflow: hidden;
         }
 
-        .header-banner {
-            grid-column: 1 / -1;
-            background-color: var(--primary);
-            color: white;
-            padding: 20px;
-            text-align: center;
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            opacity: 0.5;
         }
 
-        .header-banner h1 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-
-        .header-banner p {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .input-section {
-            padding: 30px;
-            border-right: 1px solid var(--border);
-        }
-
-        .output-section {
-            padding: 30px;
-            background-color: #F8FAFC;
-        }
-
-        h2 {
-            font-size: 1.25rem;
-            margin-bottom: 20px;
-            color: var(--text-main);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
-        }
-
-        .receipt {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
-
-        .receipt-title {
-            text-align: center;
-            font-weight: bold;
-            border-bottom: 1px dashed var(--border);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .receipt-row {
+        .card-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .receipt-row.bold {
-            font-weight: bold;
-            color: var(--primary);
+        /* INPUTS */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        .receipt-row.deduction {
-            color: #EF4444;
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
-        .divider {
-            border-bottom: 1px dashed var(--border);
-            margin: 15px 0;
-        }
-
-        .final-amount {
-            background-color: var(--text-main);
+        .input-group input {
+            width: 100%;
+            background: rgba(17, 24, 39, 0.5);
+            border: 1px solid var(--card-border);
             color: white;
-            padding: 15px;
+            padding: 0.75rem;
             border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
             text-align: center;
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-top: 20px;
+            transition: all 0.3s;
         }
 
-        .info-text {
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan-glow);
+        }
+
+        /* WAIVER SELECTION */
+        .waiver-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .waiver-btn {
+            background: rgba(31, 41, 55, 0.5);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            flex-grow: 1;
+        }
+
+        .waiver-btn:hover {
+            background: rgba(31, 41, 55, 1);
+            color: white;
+        }
+
+        .waiver-btn.active {
+            background: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-cyan-glow);
+        }
+
+        .warning-box {
+            background: rgba(248, 113, 113, 0.1);
+            border-left: 3px solid var(--danger);
+            padding: 0.75rem;
+            border-radius: 4px;
             font-size: 0.8rem;
             color: var(--text-muted);
-            margin-top: 5px;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        @media (max-width: 768px) {
-            .container {
+        /* BIG DISPLAY */
+        .final-amount-card {
+            text-align: center;
+            padding: 2.5rem !important;
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0) 0%, rgba(34, 211, 238, 0.05) 100%);
+        }
+
+        .final-amount-card h2 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .big-amount {
+            font-size: 4rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 0 20px var(--accent-cyan-glow);
+            margin-bottom: 0.5rem;
+        }
+
+        /* MINI STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 1.25rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .text-cyan { color: var(--accent-cyan) !important; }
+        .text-green { color: var(--success) !important; }
+        .text-danger { color: var(--danger) !important; }
+
+        /* TABLES & LISTS */
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--card-border);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-row strong {
+            color: white;
+        }
+
+        /* CALCULATION LOGIC SECTION */
+        .logic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .formula-box {
+            background: rgba(31, 41, 55, 0.4);
+            border: 1px solid #2d3748;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            line-height: 1.5;
+        }
+
+        .formula-box span.white { color: white; }
+        .formula-box span.muted { color: var(--text-muted); }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 900px) {
+            .dashboard {
                 grid-template-columns: 1fr;
             }
-            .input-section {
-                border-right: none;
-                border-bottom: 1px solid var(--border);
+            .logic-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header-banner">
-        <h1>Payment Spring 2026</h1>
-        <p>64 Batch Custom Calculator</p>
-    </div>
+    <header>
+        <div class="badges">
+            <span class="badge">🎓 DIU 64 Batch - CSE</span>
+            <span class="badge">✨ Official Rates</span>
+        </div>
+        <h1>Tuition Fee Calculator</h1>
+    </header>
 
-    <div class="input-section">
-        <h2>🎓 Enter Your Credits</h2>
+    <div class="dashboard">
         
-        <div class="form-group">
-            <label>📕 Core Theory Credits</label>
-            <input type="number" id="coreCredits" min="0" step="0.5" value="12">
-            <span class="info-text">৳4,900 per credit</span>
+        <div class="left-panel" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            
+            <div class="card">
+                <div class="card-title">⚙️ Credit Hours Selection</div>
+                
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Lab Credits (৳5,000/cr)</label>
+                        <input type="number" id="labCredits" value="1.5" step="0.5" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Core Theory (৳4,900/cr)</label>
+                        <input type="number" id="coreCredits" value="12" step="0.5" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>GED / Non-Core (৳3,300/cr)</label>
+                        <input type="number" id="gedCredits" value="0" step="0.5" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>FYDP (৳3,200/cr)</label>
+                        <input type="number" id="fydpCredits" value="1" step="0.5" min="0">
+                    </div>
+                </div>
+
+                <div class="card-title" style="margin-top: 1rem;">✨ Waiver Percentage</div>
+                <div class="waiver-grid" id="waiverContainer">
+                    <button class="waiver-btn active" data-val="0">0%</button>
+                    <button class="waiver-btn" data-val="10">10%</button>
+                    <button class="waiver-btn" data-val="25">25%</button>
+                    <button class="waiver-btn" data-val="35">35%</button>
+                    <button class="waiver-btn" data-val="50">50%</button>
+                    <button class="waiver-btn" data-val="75">75%</button>
+                    <button class="waiver-btn" data-val="100">100%</button>
+                </div>
+
+                <div class="warning-box">
+                    🚫 Waiver applies to Lab + Core + GED only. FYDP is excluded from waivers for all students.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📊 Current Session Snapshot</div>
+                <div class="breakdown-row">
+                    <span>🖥️ Lab</span>
+                    <strong id="snapLab">৳ 7,500</strong>
+                </div>
+                <div class="breakdown-row">
+                    <span>📕 Core Theory</span>
+                    <strong id="snapCore">৳ 58,800</strong>
+                </div>
+                <div class="breakdown-row">
+                    <span>🗒️ GED / Non-Core</span>
+                    <strong id="snapGed">৳ 0</strong>
+                </div>
+                <div class="breakdown-row">
+                    <span>📌 FYDP <span class="text-danger" style="font-size: 0.7rem;">(No Waiver)</span></span>
+                    <strong id="snapFydp">৳ 3,200</strong>
+                </div>
+                <div class="breakdown-row" style="margin-top: 10px; border-top: 1px solid var(--card-border); padding-top: 10px;">
+                    <span class="text-cyan">Waiver-Eligible Amount</span>
+                    <strong class="text-cyan" id="snapEligible">৳ 66,300</strong>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>🗒️ Non-Core / GED Credits</label>
-            <input type="number" id="gedCredits" min="0" step="0.5" value="0">
-            <span class="info-text">৳3,300 per credit</span>
-        </div>
+        <div class="right-panel">
+            
+            <div class="card final-amount-card" style="margin-bottom: 1.5rem;">
+                <h2>Amount Payable Before Final Exam</h2>
+                <div class="big-amount" id="bigFinalAmount">৳ 53,500.00</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);" id="calculationSubtitle">
+                    Total Tuition - Waiver (Lab+Core+GED) - ৳16,000 Reg Fee
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label>🖥 Lab Credits</label>
-            <input type="number" id="labCredits" min="0" step="0.5" value="1.5">
-            <span class="info-text">৳5,000 per credit</span>
-        </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Gross Total Tuition</div>
+                    <div class="stat-value text-cyan" id="statGross">৳ 69,500</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Waiver Saved</div>
+                    <div class="stat-value text-green" id="statSaved">৳ 0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Reg. Fee (Upfront)</div>
+                    <div class="stat-value" style="color: #fcd34d;">৳ 29,500</div>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label>📌 FYDP Title Defense</label>
-            <input type="number" id="fydpCredits" min="0" step="0.5" value="1">
-            <span class="info-text">৳3,200 per credit (No Waiver)</span>
-        </div>
+            <div class="card">
+                <div class="card-title">📖 Calculation Description & Logic Flow</div>
+                
+                <div class="logic-grid">
+                    <div>
+                        <div style="font-size: 0.8rem; margin-bottom: 10px; color: white;">Detailed Breakdown Table</div>
+                        <div class="breakdown-row"><span>Lab Fee</span> <strong id="tableLab">৳ 7,500</strong></div>
+                        <div class="breakdown-row"><span>Core Theory Fee</span> <strong id="tableCore">৳ 58,800</strong></div>
+                        <div class="breakdown-row"><span>GED Fee</span> <strong id="tableGed">৳ 0</strong></div>
+                        <div class="breakdown-row"><span>FYDP Fee</span> <strong id="tableFydp">৳ 3,200</strong></div>
+                        
+                        <div class="breakdown-row" style="margin-top: 10px; border-top: 1px solid #374151; padding-top: 10px;">
+                            <span>Gross Total</span> <strong id="tableGross">৳ 69,500</strong>
+                        </div>
+                        <div class="breakdown-row text-green">
+                            <span>Waiver (<span id="tableWaiverPercent">0</span>%)</span> <strong id="tableWaiverAmount">- ৳ 0</strong>
+                        </div>
+                        <div class="breakdown-row text-danger">
+                            <span>Registration Fee Deducted</span> <strong>- ৳ 16,000</strong>
+                        </div>
+                        <div class="breakdown-row" style="margin-top: 10px; font-size: 1.1rem; color: white; border-top: 1px solid #374151; padding-top: 10px;">
+                            <span>Before Final Payable</span> <strong class="text-cyan" id="tableFinal">৳ 53,500.00</strong>
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            <label>🎀 Waiver Percentage</label>
-            <select id="waiverPercent">
-                <option value="0">0%</option>
-                <option value="10">10%</option>
-                <option value="25">25%</option>
-                <option value="35">35%</option>
-                <option value="50">50%</option>
-                <option value="75">75%</option>
-            </select>
-        </div>
+                    <div>
+                        <div style="font-size: 0.8rem; margin-bottom: 10px; color: white;">Calculation Formula Reference</div>
+                        
+                        <div class="formula-box">
+                            <span class="white">Waiver-Eligible Base</span> = Lab Fee + Core Fee + GED Fee
+                        </div>
+                        <div class="formula-box">
+                            <span class="white">Waiver Saving</span> = Waiver-Eligible Base × Waiver %
+                        </div>
+                        <div class="formula-box">
+                            <span class="white">Before Final Payable</span> = (Gross Tuition - Waiver Saving) - ৳16,000 <span class="muted">(Reg Fee Component)</span>
+                        </div>
+                        
+                        <div class="warning-box" style="margin-top: 1rem; border-left-color: #fcd34d;">
+                            <strong style="color: #fcd34d;">Upfront Registration Note:</strong><br>
+                            The initial ৳29,500 paid at registration consists of a ৳16,000 standard registration fee and a ৳13,500 initial tuition deposit. Only the ৳16,000 registration component is deducted to find the "Before Final" balance.
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label>💰 Already Paid Tuition (Advance)</label>
-            <input type="number" id="advancePaid" min="0" value="16000">
-            <span class="info-text">Aligned to match the updated ৳29,500 total registration logic.</span>
         </div>
     </div>
 
-    <div class="output-section">
-        <h2>🧾 Calculation Summary</h2>
-        <div class="receipt">
-            <div class="receipt-title">========== WAIVER CALCULATION ==========</div>
-            
-            <div class="receipt-row">
-                <span>Waiver Eligible Amount:</span>
-                <span id="outEligible">Tk 0.00</span>
-            </div>
-            
-            <div class="receipt-row deduction">
-                <span>Waiver (<span id="outWaiverPercent">0</span>%):</span>
-                <span id="outWaiverAmount">- Tk 0.00</span>
-            </div>
-
-            <div class="receipt-row bold">
-                <span>Tuition After Waiver:</span>
-                <span id="outAfterWaiver">Tk 0.00</span>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="receipt-row">
-                <span>FYDP Fee Added (No Waiver):</span>
-                <span id="outFydp">Tk 0.00</span>
-            </div>
-
-            <div class="receipt-row bold">
-                <span>Total Tuition Generated:</span>
-                <span id="outTotalTuition">Tk 0.00</span>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="receipt-row deduction">
-                <span>Already Paid Tuition:</span>
-                <span id="outAdvance">- Tk 16000.00</span>
-            </div>
-
-        </div>
-
-        <div class="final-amount">
-            Amount Payable Before Final<br>
-            <span id="outFinalPayable">Tk 0.00</span>
-        </div>
+    <div class="footer">
+        Made with ❤️ for DIU 64 Batch • Verified Data for Official Rates
     </div>
-</div>
 
-<script>
-    const CORE_RATE = 4900;
-    const GED_RATE = 3300;
-    const LAB_RATE = 5000;
-    const FYDP_RATE = 3200;
+    <script>
+        // Constants & Rates
+        const RATES = {
+            lab: 5000,
+            core: 4900,
+            ged: 3300,
+            fydp: 3200
+        };
+        const REG_FEE_DEDUCTION = 16000;
+        let currentWaiver = 0;
 
-    const inputs = document.querySelectorAll('input, select');
-    
-    inputs.forEach(input => {
-        input.addEventListener('input', calculateFees);
-    });
+        // Elements
+        const inputs = {
+            lab: document.getElementById('labCredits'),
+            core: document.getElementById('coreCredits'),
+            ged: document.getElementById('gedCredits'),
+            fydp: document.getElementById('fydpCredits')
+        };
+        const waiverBtns = document.querySelectorAll('.waiver-btn');
 
-    function calculateFees() {
-        const core = parseFloat(document.getElementById('coreCredits').value) || 0;
-        const ged = parseFloat(document.getElementById('gedCredits').value) || 0;
-        const lab = parseFloat(document.getElementById('labCredits').value) || 0;
-        const fydp = parseFloat(document.getElementById('fydpCredits').value) || 0;
-        const waiverPercent = parseFloat(document.getElementById('waiverPercent').value) || 0;
-        const advancePaid = parseFloat(document.getElementById('advancePaid').value) || 0;
+        // Add event listeners
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', calculate);
+        });
 
-        // Calculations
-        const eligibleTuition = (core * CORE_RATE) + (ged * GED_RATE) + (lab * LAB_RATE);
-        const waiverAmount = eligibleTuition * (waiverPercent / 100);
-        const tuitionAfterWaiver = eligibleTuition - waiverAmount;
-        const fydpFee = fydp * FYDP_RATE;
-        
-        const totalTuitionGenerated = tuitionAfterWaiver + fydpFee;
-        const finalPayable = totalTuitionGenerated - advancePaid;
+        waiverBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                waiverBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentWaiver = parseFloat(e.target.dataset.val);
+                calculate();
+            });
+        });
 
-        // Update UI
-        document.getElementById('outEligible').innerText = `Tk ${eligibleTuition.toFixed(0)}`;
-        document.getElementById('outWaiverPercent').innerText = waiverPercent;
-        document.getElementById('outWaiverAmount').innerText = `- Tk ${waiverAmount.toFixed(0)}`;
-        document.getElementById('outAfterWaiver').innerText = `Tk ${tuitionAfterWaiver.toFixed(0)}`;
-        document.getElementById('outFydp').innerText = `Tk ${fydpFee.toFixed(0)}`;
-        document.getElementById('outTotalTuition').innerText = `Tk ${totalTuitionGenerated.toFixed(0)}`;
-        document.getElementById('outAdvance').innerText = `- Tk ${advancePaid.toFixed(0)}`;
-        document.getElementById('outFinalPayable').innerText = `Tk ${finalPayable.toFixed(0)}`;
-    }
+        // Format Currency Helper
+        function fmt(num) {
+            return num.toLocaleString('en-IN');
+        }
 
-    calculateFees();
-</script>
+        function calculate() {
+            // Read Values
+            const crLab = parseFloat(inputs.lab.value) || 0;
+            const crCore = parseFloat(inputs.core.value) || 0;
+            const crGed = parseFloat(inputs.ged.value) || 0;
+            const crFydp = parseFloat(inputs.fydp.value) || 0;
 
+            // Calculate Fees
+            const feeLab = crLab * RATES.lab;
+            const feeCore = crCore * RATES.core;
+            const feeGed = crGed * RATES.ged;
+            const feeFydp = crFydp * RATES.fydp;
+
+            // Totals
+            const eligibleBase = feeLab + feeCore + feeGed;
+            const grossTotal = eligibleBase + feeFydp;
+            
+            // Waiver
+            const waiverSaved = eligibleBase * (currentWaiver / 100);
+            const totalTuitionAfterWaiver = grossTotal - waiverSaved;
+            
+            // Final Payable
+            const finalPayable = totalTuitionAfterWaiver - REG_FEE_DEDUCTION;
+
+            // Update UI - Snapshot Left Panel
+            document.getElementById('snapLab').innerText = `৳ ${fmt(feeLab)}`;
+            document.getElementById('snapCore').innerText = `৳ ${fmt(feeCore)}`;
+            document.getElementById('snapGed').innerText = `৳ ${fmt(feeGed)}`;
+            document.getElementById('snapFydp').innerText = `৳ ${fmt(feeFydp)}`;
+            document.getElementById('snapEligible').innerText = `৳ ${fmt(eligibleBase)}`;
+
+            // Update UI - Top Stats
+            document.getElementById('bigFinalAmount').innerText = `৳ ${fmt(finalPayable)}.00`;
+            document.getElementById('statGross').innerText = `৳ ${fmt(grossTotal)}`;
+            document.getElementById('statSaved').innerText = `৳ ${fmt(waiverSaved)}`;
+
+            // Update UI - Detailed Breakdown Table
+            document.getElementById('tableLab').innerText = `৳ ${fmt(feeLab)}`;
+            document.getElementById('tableCore').innerText = `৳ ${fmt(feeCore)}`;
+            document.getElementById('tableGed').innerText = `৳ ${fmt(feeGed)}`;
+            document.getElementById('tableFydp').innerText = `৳ ${fmt(feeFydp)}`;
+            document.getElementById('tableGross').innerText = `৳ ${fmt(grossTotal)}`;
+            
+            document.getElementById('tableWaiverPercent').innerText = currentWaiver;
+            document.getElementById('tableWaiverAmount').innerText = `- ৳ ${fmt(waiverSaved)}`;
+            document.getElementById('tableFinal').innerText = `৳ ${fmt(finalPayable)}.00`;
+        }
+
+        // Init calculations on load
+        calculate();
+    </script>
 </body>
 </html>
